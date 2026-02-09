@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: dating-app
-        image: yourdockerhubuser/dating-app:replaceImageTag
+        image: jack0028/dating-app:1
         ports:
         - containerPort: 8080
