@@ -62,7 +62,7 @@ pipeline {
             export KUBECONFIG=$KUBECONFIG_FILE
             kubectl apply -f k8s/deployment.yml
             kubectl apply -f k8s/service.yml
-            kubectl rollout status deployment/dating-app-deployment
+            kubectl rollout status deployment/dating-app/deployment.yml
           '''
         }
       }
