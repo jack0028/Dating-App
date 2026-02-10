@@ -1,5 +1,5 @@
 pipeline {
-  agent any   // Jenkins will run on the node with Docker, Maven, SonarQube, kubectl installed
+  agent { label 'build-node' }   // ensures pipeline runs on Instance B
   stages {
     stage('Checkout') {
       steps {
