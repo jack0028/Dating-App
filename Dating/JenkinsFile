@@ -1,18 +1,16 @@
 pipeline {
-  agent { label 'build-node' }   // ensures pipeline runs on Instance B
+  agent any
   stages {
     stage('Checkout') {
       steps {
         git branch: 'main', url: 'https://github.com/jack0028/Dating-App.git'
       }
     }
-
     stage('Build and Test') {
       steps {
         sh 'mvn clean package'
       }
     }
-
     stage('Static Code Analysis') {
       environment {
         SONAR_URL = "http://3.111.43.209:9000"
@@ -23,7 +21,6 @@ pipeline {
         }
       }
     }
-
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "jack0028/dating-app:${BUILD_NUMBER}"
@@ -38,7 +35,6 @@ pipeline {
         }
       }
     }
-
     stage('Update Deployment File') {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
@@ -53,7 +49,6 @@ pipeline {
         }
       }
     }
-
     stage('Deploy to Kubernetes') {
       steps {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
