@@ -1,100 +1,67 @@
 package com.dating.Entity;
 
 import java.util.List;
-import java.util.Objects;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Data
 
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-
     private String name;
-
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
     private int age;
-
-    @ElementCollection
+    private String gender;
     private List<String> interests;
 
-	public Long getId() {
-		return id;
-	}
+    public User() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public User(Long id, String name, int age, String gender, List<String> interests) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.interests = interests;
+    }
 
-	public String getName() {
-		return name;
-	}
+    // ===== GETTERS =====
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Gender getGender() {
-		return gender;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
+    public int getAge() {
+        return age;
+    }
 
-	public int getAge() {
-		return age;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+    public List<String> getInterests() {
+        return interests;
+    }
 
-	public List<String> getInterests() {
-		return interests;
-	}
+    // ===== SETTERS =====
 
-	public void setInterests(List<String> interests) {
-		this.interests = interests;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public User(Long id, String name, Gender gender, int age, List<String> interests) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.gender = gender;
-		this.age = age;
-		this.interests = interests;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public User(String name, Gender gender, int age, List<String> interests) {
-		super();
-		this.name = name;
-		this.gender = gender;
-		this.age = age;
-		this.interests = interests;
-	}
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-    
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
+    }
 }
-
-
-
