@@ -1,21 +1,18 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven:3.9.9-eclipse-temurin-17'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-    }
-  }
+  agent any   // Jenkins will run on the node with Docker, Maven, SonarQube, kubectl installed
   stages {
     stage('Checkout') {
       steps {
         git branch: 'main', url: 'https://github.com/jack0028/Dating-App.git'
       }
     }
+
     stage('Build and Test') {
       steps {
         sh 'mvn clean package'
       }
     }
+
     stage('Static Code Analysis') {
       environment {
         SONAR_URL = "http://3.111.43.209:9000"
@@ -26,10 +23,10 @@ pipeline {
         }
       }
     }
+
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "jack0028/dating-app:${BUILD_NUMBER}"
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
         script {
@@ -41,20 +38,22 @@ pipeline {
         }
       }
     }
+
     stage('Update Deployment File') {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
             git config user.email "jackjustin909@gmail.com"
             git config user.name "jack0028"
-            sed -i "s/1/${BUILD_NUMBER}/g" /deployment.yml
-            git add deployment.yml
+            sed -i "s/1/${BUILD_NUMBER}/g" k8s/deployment.yml
+            git add k8s/deployment.yml
             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
             git push https://${GITHUB_TOKEN}@github.com/jack0028/Dating-App HEAD:main
           '''
         }
       }
     }
+
     stage('Deploy to Kubernetes') {
       steps {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
@@ -62,7 +61,7 @@ pipeline {
             export KUBECONFIG=$KUBECONFIG_FILE
             kubectl apply -f k8s/deployment.yml
             kubectl apply -f k8s/service.yml
-            kubectl rollout status deployment/dating-app/deployment.yml
+            kubectl rollout status deployment/dating-app
           '''
         }
       }
