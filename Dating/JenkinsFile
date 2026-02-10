@@ -1,15 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'docker:26.1.3-cli'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-      reuseNode true
-    }
-  }
-
-  options {
-    skipDefaultCheckout(true)
-  }
+  agent { label 'build-node' }   // Run directly on your build server agent
 
   environment {
     REPO_URL   = "https://github.com/jack0028/Dating-App.git"
@@ -18,18 +8,6 @@ pipeline {
   }
 
   stages {
-
-    stage('Install Build Tools') {
-      steps {
-        sh '''
-          apk update
-          apk add --no-cache maven openjdk17 git
-          java -version
-          mvn -version
-          docker --version
-        '''
-      }
-    }
 
     stage('Checkout') {
       steps {
@@ -95,8 +73,7 @@ pipeline {
             git config user.email "jackjustin909@gmail.com"
             git config user.name "jack0028"
 
-            sed -i "s|\\(image: .*:\\).*|\\1${BUILD_NUMBER}|" \
-              ${APP_DIR}/deployment.yml
+            sed -i "s|\\(image: .*:\\).*|\\1${BUILD_NUMBER}|" ${APP_DIR}/deployment.yml
 
             git add ${APP_DIR}/deployment.yml
 
