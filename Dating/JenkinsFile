@@ -1,15 +1,38 @@
 pipeline {
-  agent { label 'build-node' }   // Run directly on your build server agent
-
+ 
+  agent {
+    docker {
+      image 'docker:26.1.3-cli'
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+      reuseNode true
+    }
+  }
+ 
+  options {
+    skipDefaultCheckout(true)
+  }
+ 
   environment {
     REPO_URL   = "https://github.com/jack0028/Dating-App.git"
     APP_DIR    = "Dating"
     IMAGE_NAME = "jack0028/dating-app"
   }
-
+ 
   stages {
-
-    stage('Checkout') {
+ 
+    stage('Install Build Tools') {
+      steps {
+        sh '''
+          apk update
+          apk add --no-cache maven openjdk17 git
+          java -version
+          mvn -version
+          docker --version
+        '''
+      }
+    }
+ 
+    stage('Checkout (inside container)') {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
@@ -21,7 +44,7 @@ pipeline {
         }
       }
     }
-
+ 
     stage('Build and Test') {
       steps {
         sh '''
@@ -30,10 +53,10 @@ pipeline {
         '''
       }
     }
-
+ 
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://13.200.12.70:9000"
+        SONAR_URL = "http://52.66.218.72:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -46,7 +69,7 @@ pipeline {
         }
       }
     }
-
+ 
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "${IMAGE_NAME}:${BUILD_NUMBER}"
@@ -63,40 +86,28 @@ pipeline {
         }
       }
     }
-
+ 
     stage('Update Deployment File') {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
             cd Dating-App
-
+ 
             git config user.email "jackjustin909@gmail.com"
             git config user.name "jack0028"
-
-            sed -i "s|\\(image: .*:\\).*|\\1${BUILD_NUMBER}|" ${APP_DIR}/deployment.yml
-
-            git add ${APP_DIR}/deployment.yml
-
+ 
+            sed -i "s|\\(image: .*:\\).*|\\1${BUILD_NUMBER}|" \
+              Dating/deployment.yml
+ 
+            git add Dating/deployment.yml
+ 
             if git diff --cached --quiet; then
               echo "No changes to commit. Skipping Git push."
               exit 0
             fi
-
+ 
             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
             git push https://${GITHUB_TOKEN}@github.com/jack0028/Dating-App.git main
-          '''
-        }
-      }
-    }
-
-    stage('Deploy to Kubernetes') {
-      steps {
-        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-          sh '''
-            export KUBECONFIG=$KUBECONFIG_FILE
-            kubectl apply -f Dating-App/${APP_DIR}/deployment.yml
-            kubectl apply -f Dating-App/${APP_DIR}/service.yml
-            kubectl rollout status deployment/dating-app
           '''
         }
       }
