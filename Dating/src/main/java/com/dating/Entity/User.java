@@ -20,6 +20,12 @@ public class User {
         this.gender = gender;
         this.interests = interests;
     }
+public User(String name, Gender gender, int age, List<String> interests) {
+    this.name = name;
+    this.gender = gender.name(); // convert enum to String
+    this.age = age;
+    this.interests = interests;
+}
 
     // ===== GETTERS =====
 
@@ -65,3 +71,4 @@ public class User {
         this.interests = interests;
     }
 }
+
