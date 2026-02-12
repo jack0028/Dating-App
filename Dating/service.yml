@@ -7,6 +7,7 @@ spec:
     app: dating-app
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 80          # service port
+      targetPort: 8080  # forwards to containerPort inside pod
+      nodePort: 32000   # external NodePort (avoid Jenkins conflict)
   type: NodePort
