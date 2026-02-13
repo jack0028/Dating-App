@@ -17,7 +17,7 @@ spec:
       containers:
       - name: dating-app
         # Use the image built inside Minikube’s Docker daemon
-        image: dating-app:latest
+        image: dating-app:10
         ports:
         - containerPort: 8080
         readinessProbe:
