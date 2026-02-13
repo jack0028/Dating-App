@@ -68,11 +68,19 @@ pipeline {
             }
         }
 
+        stage('Update Deployment File') {
+            steps {
+                sh '''
+                  sed -i "s|image:.*|image: ${IMAGE_NAME}:${BUILD_NUMBER}|" Dating-App/${APP_DIR}/deployment.yml
+                '''
+            }
+        }
+
         stage('Deploy to Minikube') {
             steps {
                 sh '''
-                  kubectl apply -f Dating-App/deployment.yaml
-                  kubectl apply -f Dating-App/service.yaml
+                  kubectl apply -f Dating-App/${APP_DIR}/deployment.yml
+                  kubectl apply -f Dating-App/${APP_DIR}/service.yml
                   kubectl rollout status deployment/dating-app-deployment --timeout=60s
                 '''
             }
