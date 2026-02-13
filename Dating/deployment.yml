@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
       - name: dating-app
-        # Use the image built inside Minikube’s Docker daemon
-        image: dating-app:10
+        image: jack0028/dating-app:latest   # Jenkins pushes with BUILD_NUMBER, update via sed in pipeline
         ports:
         - containerPort: 8080
         readinessProbe:
