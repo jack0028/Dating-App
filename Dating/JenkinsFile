@@ -1,5 +1,5 @@
 pipeline {
-    agent any   // run directly on the VM host, not inside docker:cli
+    agent any   // run directly on the VM host
 
     options {
         skipDefaultCheckout(true)
@@ -8,24 +8,9 @@ pipeline {
     environment {
         REPO_URL   = "https://github.com/jack0028/Dating-App.git"
         APP_DIR    = "Dating"
-        IMAGE_NAME = "jack0028/dating-app"
     }
 
     stages {
-
-        stage('Install Build Tools') {
-            steps {
-                sh '''
-                  sudo apt-get update -y
-                  sudo apt-get install -y maven openjdk-17-jdk git docker.io
-                  java -version
-                  mvn -version
-                  docker --version
-                  kubectl version --client
-                  minikube version
-                '''
-            }
-        }
 
         stage('Checkout') {
             steps {
@@ -78,11 +63,8 @@ pipeline {
         stage('Deploy to Minikube') {
             steps {
                 sh '''
-                  # Apply Kubernetes manifests
                   kubectl apply -f Dating-App/k8s/deployment.yaml
                   kubectl apply -f Dating-App/k8s/service.yaml
-
-                  # Verify rollout
                   kubectl rollout status deployment/dating-app-deployment --timeout=60s
                 '''
             }
