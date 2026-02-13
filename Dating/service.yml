@@ -2,12 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dating-app-service
+  labels:
+    app: dating-app
 spec:
   selector:
     app: dating-app
   ports:
     - protocol: TCP
-      port: 80          # service port
+      port: 80          # Service port
       targetPort: 8080  # forwards to containerPort inside pod
-      nodePort: 32000   # external NodePort (avoid Jenkins conflict)
   type: NodePort
