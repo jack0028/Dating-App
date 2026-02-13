@@ -71,8 +71,8 @@ pipeline {
         stage('Deploy to Minikube') {
             steps {
                 sh '''
-                  kubectl apply -f Dating-App/k8s/deployment.yaml
-                  kubectl apply -f Dating-App/k8s/service.yaml
+                  kubectl apply -f Dating-App/deployment.yaml
+                  kubectl apply -f Dating-App/service.yaml
                   kubectl rollout status deployment/dating-app-deployment --timeout=60s
                 '''
             }
