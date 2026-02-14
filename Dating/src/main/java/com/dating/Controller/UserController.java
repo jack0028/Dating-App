@@ -20,6 +20,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    
+@GetMapping("/hello")
+@ResponseBody
+public String helloWorld() {
+    return "Hello World from Dating-App!";
+}
 
     @GetMapping("/")
     public String showHomePage(Model model) {
@@ -59,4 +65,5 @@ public class UserController {
         return "redirect:/users/"; 
     }
 }
+
 
