@@ -16,18 +16,6 @@ spec:
     spec:
       containers:
       - name: dating-app
-        image: jack0028/dating-app:latest   # Jenkins pushes with BUILD_NUMBER, update via sed in pipeline
+        image: jack0028/dating-app:latest   # Jenkins sed replaces with jack0028/dating-app:${BUILD_NUMBER}
         ports:
         - containerPort: 8080
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 30
