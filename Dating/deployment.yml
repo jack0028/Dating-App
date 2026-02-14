@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dating-app-deployment
+  labels:
+    app: dating-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dating-app
+  template:
+    metadata:
+      labels:
+        app: dating-app
+    spec:
+      containers:
+      - name: dating-app
+        image: jack0028/dating-app:latest   # Jenkins sed replaces with jack0028/dating-app:${BUILD_NUMBER}
+        ports:
+        - containerPort: 8080
