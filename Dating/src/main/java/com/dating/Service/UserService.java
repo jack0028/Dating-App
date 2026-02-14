@@ -23,12 +23,13 @@ public class UserService {
     }
 
     private void loadSampleData() {
-        saveUser(new User(null, "Female", 25, Arrays.asList("Cricket", "Chess")));
-        saveUser(new User(null, "Male", 27, Arrays.asList("Cricket", "Football", "Movies")));
-        saveUser(new User(null, "Male", 26, Arrays.asList("Movies", "Tennis", "Football", "Cricket")));
-        saveUser(new User(null, "Female", 24, Arrays.asList("Tennis", "Football", "Badminton")));
-        saveUser(new User(null, "Female", 32, Arrays.asList("Cricket", "Football", "Movies", "Badminton")));
-    }
+    saveUser(new User(null, Gender.FEMALE, 25, Arrays.asList("Cricket", "Chess")));
+    saveUser(new User(null, Gender.MALE, 27, Arrays.asList("Cricket", "Football", "Movies")));
+    saveUser(new User(null, Gender.MALE, 26, Arrays.asList("Movies", "Tennis", "Football", "Cricket")));
+    saveUser(new User(null, Gender.FEMALE, 24, Arrays.asList("Tennis", "Football", "Badminton")));
+    saveUser(new User(null, Gender.FEMALE, 32, Arrays.asList("Cricket", "Football", "Movies", "Badminton")));
+}
+
 
     public List<User> recommendMatches(Long userId, int topN) {
         User source = findUserById(userId);
@@ -56,3 +57,4 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 }
+
