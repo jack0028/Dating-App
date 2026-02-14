@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;   // ✅ add this
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.stereotype.Controller;
 
 import com.dating.Entity.Gender;
@@ -65,5 +67,6 @@ public String helloWorld() {
         return "redirect:/users/"; 
     }
 }
+
 
 
