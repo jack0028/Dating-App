@@ -1,6 +1,7 @@
 package com.dating.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -18,12 +19,21 @@ public class UserService {
 
     public UserService(RecommendationEngine recommendationEngine) {
         this.recommendationEngine = recommendationEngine;
+        loadSampleData(); // preload sample users
+    }
+
+    private void loadSampleData() {
+        saveUser(new User(null, "Female", 25, Arrays.asList("Cricket", "Chess")));
+        saveUser(new User(null, "Male", 27, Arrays.asList("Cricket", "Football", "Movies")));
+        saveUser(new User(null, "Male", 26, Arrays.asList("Movies", "Tennis", "Football", "Cricket")));
+        saveUser(new User(null, "Female", 24, Arrays.asList("Tennis", "Football", "Badminton")));
+        saveUser(new User(null, "Female", 32, Arrays.asList("Cricket", "Football", "Movies", "Badminton")));
     }
 
     public List<User> recommendMatches(Long userId, int topN) {
         User source = findUserById(userId);
         List<User> candidates = users.stream()
-                .filter(u -> !u.getId().equals(source.getId()) && u.getGender() != source.getGender())
+                .filter(u -> !u.getId().equals(source.getId()) && !u.getGender().equals(source.getGender()))
                 .collect(Collectors.toList());
         return recommendationEngine.findTopMatches(source, candidates, topN);
     }
