@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.dating.Entity.User;
+import com.dating.Entity.Gender;
+
 
 @Service
 public class UserService {
@@ -57,4 +59,5 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 }
+
 
