@@ -15,6 +15,7 @@
     <groupId>com.dating</groupId>
     <artifactId>dating-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging> <!-- ✅ WAR packaging -->
     <name>Dating</name>
     <description>Spring Online Dating</description>
 
@@ -23,13 +24,13 @@
     </properties>
 
     <dependencies>
-        <!-- Spring Boot Web Starter for MVC -->
+        <!-- Spring Boot Web Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Devtools for hot reload -->
+        <!-- Devtools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -60,18 +61,37 @@
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>3.0.0</version>
         </dependency>
+
+        <!-- Servlet API for WAR deployment -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Compiler plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
 
+            <!-- Spring Boot plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- WAR plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
         </plugins>
     </build>
