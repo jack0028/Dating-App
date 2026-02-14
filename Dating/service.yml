@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: dating-app-service
   labels:
-    app: dating-app
+    app: dating-app-service
 spec:
   selector:
     app: dating-app
