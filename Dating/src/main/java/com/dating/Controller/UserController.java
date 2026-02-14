@@ -16,7 +16,6 @@ import com.dating.Entity.User;
 import com.dating.Service.UserService;
 
 @Controller
-@RequestMapping("/users")   // ✅ class-level mapping
 public class UserController {
 
     @Autowired
@@ -60,3 +59,4 @@ public class UserController {
         return "redirect:/users/"; 
     }
 }
+
