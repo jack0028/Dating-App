@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class DatingApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
-        SpringApplication.run(DatingAppApplication.class, args);
+        SpringApplication.run(DatingApplication.class, args);
     }
 }
 
