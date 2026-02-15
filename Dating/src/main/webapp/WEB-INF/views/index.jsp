@@ -81,7 +81,7 @@
 
         <h2 class="mt-4 text-danger"><i class="fas fa-heart"></i> Recommendations:</h2>
         <div class="table-responsive">
-            <table class="table table-bordered mt-3">
+            <table aria-label="User list" class="table table-bordered mt-3">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -153,3 +153,4 @@
     </div>
 </body>
 </html>
+
