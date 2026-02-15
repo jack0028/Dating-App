@@ -1,33 +1,32 @@
-package com.dating.Controller;
+package com.dating.controller;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;   // ✅ add this
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.stereotype.Controller;
+import com.dating.entity.Gender;
+import com.dating.entity.User;
+import com.dating.service.UserService;
 
-import com.dating.Entity.Gender;
-import com.dating.Entity.User;
-import com.dating.Service.UserService;
-
-@Controller
+@RestController
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-    
-@GetMapping("/hello")
-@ResponseBody
-public String helloWorld() {
-    return "Hello World from Dating-App!";
-}
+    private final UserService userService;
+
+    // ✅ Constructor injection
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/hello")
+    public String helloWorld() {
+        return "Hello World from Dating-App!";
+    }
 
     @GetMapping("/")
     public String showHomePage(Model model) {
@@ -67,6 +66,3 @@ public String helloWorld() {
         return "redirect:/users/"; 
     }
 }
-
-
-
