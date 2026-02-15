@@ -9,6 +9,7 @@ spec:
     app: dating-app
   ports:
     - protocol: TCP
-      port: 80          # Service port
+      port: 80          # Service port inside cluster
       targetPort: 8080  # forwards to containerPort inside pod
+      nodePort: 30080   # fixed external port
   type: NodePort
