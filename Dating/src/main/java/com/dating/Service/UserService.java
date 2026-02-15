@@ -1,4 +1,4 @@
-package com.dating.Service;
+package com.dating.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.dating.Entity.User;
-import com.dating.Entity.Gender;
+import com.dating.entity.User;
+import com.dating.entity.Gender;
 
 
 @Service
@@ -59,5 +59,6 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 }
+
 
 
