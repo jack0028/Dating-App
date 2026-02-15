@@ -1,4 +1,4 @@
-package com.dating.Rule;
+package com.dating.rule;
 
 import org.springframework.stereotype.Component;
 
@@ -17,4 +17,5 @@ public class InterestRule implements MatchingRule {
         return Long.compare(matches2, matches1);
     }
 }
+
 
