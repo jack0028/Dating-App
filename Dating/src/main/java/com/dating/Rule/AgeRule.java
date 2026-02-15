@@ -2,7 +2,7 @@ package com.dating.rule;
 
 import org.springframework.stereotype.Component;
 
-import com.dating.Entity.User;
+import com.dating.entity.User;
 
 @Component
 public class AgeRule implements MatchingRule {
@@ -13,4 +13,5 @@ public class AgeRule implements MatchingRule {
         return Integer.compare(ageDiff1, ageDiff2);
     }
 }
+
 
