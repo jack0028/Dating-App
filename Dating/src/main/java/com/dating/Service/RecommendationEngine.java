@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.dating.Entity.User;
-import com.dating.Rule.MatchingRule;
+import com.dating.entity.User;
+import com.dating.rule.MatchingRule;
 
 @Service
 public class RecommendationEngine {
@@ -31,4 +31,5 @@ public class RecommendationEngine {
                 .collect(Collectors.toList());
     }
 }
+
 
