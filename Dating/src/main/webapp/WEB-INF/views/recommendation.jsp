@@ -94,7 +94,7 @@
         <h3>User: ${user.name} (${user.gender}, ${user.age})</h3>
         <h4>Showing the top ${topN} recommendations based on matching interests:</h4>
 
-        <table class="table table-bordered mt-4">
+        <table aria-label="User list" class="table table-bordered mt-4">
             <thead>
                 <tr>
                     <th>#</th>
@@ -136,3 +136,4 @@
     <!-- Font Awesome for heart icons -->
 </body>
 </html>
+
