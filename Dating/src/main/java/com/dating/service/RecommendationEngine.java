@@ -28,9 +28,10 @@ public class RecommendationEngine {
                     return 0;
                 })
                 .limit(topN)
-                .stream.toList();
+                .toList();
     }
 }
+
 
 
 
