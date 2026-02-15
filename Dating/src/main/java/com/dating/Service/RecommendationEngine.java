@@ -1,4 +1,4 @@
-package com.dating.Service;
+package com.dating.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,3 +31,4 @@ public class RecommendationEngine {
                 .collect(Collectors.toList());
     }
 }
+
