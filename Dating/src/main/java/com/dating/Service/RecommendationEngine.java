@@ -28,8 +28,9 @@ public class RecommendationEngine {
                     return 0;
                 })
                 .limit(topN)
-                .collect(Collectors.toList());
+                stream.toList();
     }
 }
+
 
 
