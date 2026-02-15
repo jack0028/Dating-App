@@ -13,7 +13,7 @@ import com.dating.entity.Gender;
 import com.dating.entity.User;
 import com.dating.service.UserService;
 
-@RestController
+@Controller
 public class UserController {
 
     private final UserService userService;
@@ -21,11 +21,6 @@ public class UserController {
     // ✅ Constructor injection
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping("/hello")
-    public String helloWorld() {
-        return "Hello World from Dating-App!";
     }
 
     @GetMapping("/")
@@ -66,3 +61,4 @@ public class UserController {
         return "redirect:/users/"; 
     }
 }
+
