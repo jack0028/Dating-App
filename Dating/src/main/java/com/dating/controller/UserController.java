@@ -60,9 +60,10 @@ public class UserController {
         User user = new User(name, Gender.valueOf(gender.toUpperCase()), age, interestsList);
 
         userService.saveUser(user);
-        return "redirect:/users/"; 
+        return "redirect:/"; 
     }
 }
+
 
 
 
