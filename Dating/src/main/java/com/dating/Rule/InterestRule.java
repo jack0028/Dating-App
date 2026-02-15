@@ -2,7 +2,7 @@ package com.dating.rule;
 
 import org.springframework.stereotype.Component;
 
-import com.dating.Entity.User;
+import com.dating.entity.User;
 
 @Component
 public class InterestRule implements MatchingRule {
@@ -17,5 +17,6 @@ public class InterestRule implements MatchingRule {
         return Long.compare(matches2, matches1);
     }
 }
+
 
 
