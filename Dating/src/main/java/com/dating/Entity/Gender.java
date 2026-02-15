@@ -1,3 +1,4 @@
-package com.dating.Entity;
+package com.dating.entity;
 
 public enum Gender { MALE, FEMALE }
+
