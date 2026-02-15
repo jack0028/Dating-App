@@ -1,4 +1,4 @@
-package com.dating.Entity;
+package com.dating.entity;
 
 import java.util.List;
 
@@ -41,3 +41,4 @@ public class User {
 
     public User() {}
 }
+
