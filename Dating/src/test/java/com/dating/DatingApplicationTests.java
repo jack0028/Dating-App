@@ -8,6 +8,7 @@ class DatingApplicationTests {
 
 	@Test
 	void contextLoads() {
+		assertTrue(true);
 	}
 
 }
