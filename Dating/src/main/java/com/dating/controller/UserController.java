@@ -49,20 +49,23 @@ public class UserController {
         }
     }
 
-    @PostMapping("/register")
-    public String registerUser(@RequestParam String name,
-                               @RequestParam int age,
-                               @RequestParam String gender,
-                               @RequestParam String interests) {
-        List<String> interestsList = Arrays.stream(interests.split(","))
-                                   .map(String::trim)
-                                   .toList();
-        User user = new User(name, Gender.valueOf(gender.toUpperCase()), age, interestsList);
+   @PostMapping("/register")
+public String registerUser(@RequestParam String name,
+                           @RequestParam int age,
+                           @RequestParam String gender,
+                           @RequestParam String interests) {
+    List<String> interestsList = Arrays.stream(interests.split(","))
+                               .map(String::trim)
+                               .toList();
+    User user = new User(name, Gender.valueOf(gender.toUpperCase()), age, interestsList);
 
-        userService.saveUser(user);
-        return "redirect:/"; 
-    }
+    userService.saveUser(user);
+    // ✅ Redirect to home (index.jsp)
+    return "redirect:/";
 }
+
+}
+
 
 
 
