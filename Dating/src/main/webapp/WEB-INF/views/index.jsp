@@ -124,7 +124,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/users" method="POST">
+                    <form action="/register" method="POST">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" id="username" name="name" required>
@@ -153,4 +153,5 @@
     </div>
 </body>
 </html>
+
 
