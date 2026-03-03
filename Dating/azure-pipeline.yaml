@@ -1,10 +1,13 @@
 trigger:
-- main
+- main   # Run pipeline on commits to main branch
 
 pool:
   vmImage: 'ubuntu-latest'
 
 stages:
+# -------------------
+# Stage 1: Build & Unit Test
+# -------------------
 - stage: Build
   jobs:
   - job: MavenBuild
@@ -13,50 +16,66 @@ stages:
       inputs:
         mavenPomFile: 'pom.xml'
         goals: 'clean install'
-      displayName: 'Build & Test'
+      displayName: 'Build & Test Spring Boot App'
 
-- stage: SonarQubeAnalysis
+# -------------------
+# Stage 2: SonarCloud Analysis
+# -------------------
+- stage: SonarCloudAnalysis
   jobs:
   - job: CodeQuality
     steps:
-    - task: SonarQubePrepare@5
+    - task: SonarCloudPrepare@1
       inputs:
-        SonarQube: 'SonarQubeServiceConnection'
+        SonarCloud: 'SonarCloudServiceConnection'   # Name of your service connection
+        organization: 'my-org'                      # SonarCloud organization key
         scannerMode: 'CLI'
         configMode: 'manual'
         cliProjectKey: 'spring-boot-app'
         cliProjectName: 'Spring Boot App'
-    - task: SonarQubeAnalyze@5
-    - task: SonarQubePublish@5
+    - task: SonarCloudAnalyze@1
+    - task: SonarCloudPublish@1
       inputs:
         pollingTimeoutSec: '300'
 
+# -------------------
+# Stage 3: Container Build & Trivy Scan
+# -------------------
 - stage: ContainerBuild
   jobs:
   - job: DockerBuild
     steps:
+    # Install Trivy
     - script: |
-        docker build -t myacr.azurecr.io/spring-boot-app:$(Build.BuildId) .
-        trivy image --exit-code 1 --severity HIGH,CRITICAL myacr.azurecr.io/spring-boot-app:$(Build.BuildId)
-      displayName: 'Build & Scan Docker Image'
+        sudo apt-get update
+        sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update
+        sudo apt-get install -y trivy
+      displayName: 'Install Trivy'
+
+    # Build Docker image using your Dockerfile
+    - task: Docker@2
+      inputs:
+        command: 'build'
+        containerRegistry: 'ACRServiceConnection'
+        repository: 'dating-app'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(Build.BuildId)'
+      displayName: 'Build Docker Image'
+
+    # Scan Docker image with Trivy
+    - script: |
+        trivy image --exit-code 1 --severity HIGH,CRITICAL myacr.azurecr.io/dating-app:$(Build.BuildId)
+      displayName: 'Scan Docker Image with Trivy'
+
+    # Push image to ACR if scan passes
     - task: Docker@2
       inputs:
         command: 'push'
         containerRegistry: 'ACRServiceConnection'
-        repository: 'spring-boot-app'
+        repository: 'dating-app'
         tags: '$(Build.BuildId)'
+      displayName: 'Push Docker Image to ACR'
 
-- stage: DeployAKS
-  jobs:
-  - job: Deploy
-    steps:
-    - task: Kubernetes@1
-      inputs:
-        connectionType: 'Azure Resource Manager'
-        azureSubscription: 'AKSServiceConnection'
-        azureResourceGroup: 'myResourceGroup'
-        kubernetesCluster: 'myAKSCluster'
-        namespace: 'production'
-        command: 'apply'
-        useConfigurationFile: true
-        configuration: 'manifests/deployment.yaml'
